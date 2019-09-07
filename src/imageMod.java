@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class imageMod {
-    private BufferedImage img;
+    protected BufferedImage img;
 
     public imageMod(String inFile) {
         try {

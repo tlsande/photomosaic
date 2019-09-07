@@ -1,4 +1,6 @@
 .idea/
 *.png
+*.jpg
+*.gif
 out/
 *.iml

@@ -1,13 +1,17 @@
 
 public class main {
     public static void main(String[] args) {
-        imageMod source = new imageMod("test3.png");
-        source.scaleDown(10);
-        source.scaleUp(10);
-        source.writeImg("output2");
+        String sourceDir = "images/base/test.png";
+        String outputDir = "images/processed/";
+        imageMod base = new imageMod(sourceDir);
+        base.scaleDown(10);
+        base.scaleUp(10);
+        //base.writeImg("output2");
+        base.writeImg(outputDir+"output2");
 
-        sourceImages test = new sourceImages("test2.png");
-        test.scale(32);
-        test.writeImg("output3");
+        sourceImages source = new sourceImages(sourceDir);
+        source.scale(32);
+        //source.writeImg("output3");
+        source.writeImg(outputDir+"output3");
     }
 }

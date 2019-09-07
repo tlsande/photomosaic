@@ -4,15 +4,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class sourceImages {
-    BufferedImage img;
-
+public class sourceImages extends imageMod{
     public sourceImages(String inFile) {
-        try {
-            img = ImageIO.read(new File(inFile));
-        } catch (IOException e) {
-        }
+        super(inFile);
     }
+    //BufferedImage img;
+
+//    public sourceImages(String inFile) {
+//        try {
+//            img = ImageIO.read(new File(inFile));
+//        } catch (IOException e) {
+//        }
+//    }
 
     public void scale( int size) {
         BufferedImage resized = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
@@ -42,13 +45,13 @@ public class sourceImages {
         return new Color(r, g, b);
     }
 
-    public void writeImg(String name) {
-        try {
-            File outputfile = new File(name + ".png");
-            ImageIO.write(img, "png", outputfile);
-        }
-        catch (IOException e) {
-            System.out.println("Could not write out image.");
-        }
-    }
+//    public void writeImg(String name) {
+//        try {
+//            File outputfile = new File(name + ".png");
+//            ImageIO.write(img, "png", outputfile);
+//        }
+//        catch (IOException e) {
+//            System.out.println("Could not write out image.");
+//        }
+//    }
 }
