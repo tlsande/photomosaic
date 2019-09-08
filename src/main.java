@@ -12,6 +12,6 @@ public class main {
         sourceImages source = new sourceImages(sourceDir);
         source.scale(32);
         //source.writeImg("output3");
-        source.writeImg(outputDir+"output3");
+        //source.writeImg(outputDir+"output3");
     }
 }

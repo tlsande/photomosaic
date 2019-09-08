@@ -4,3 +4,5 @@
 *.gif
 out/
 *.iml
+*.jar
+src/META-INF/
