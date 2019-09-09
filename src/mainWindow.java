@@ -31,6 +31,7 @@ public class mainWindow {
     private JTextField processedOutputDirectory;
     private JButton processedOutputButton;
     private JLabel processedOutputLabel;
+    private JProgressBar progressBar;
 
 
     public mainWindow() {
@@ -151,8 +152,41 @@ public class mainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                progressBar.setValue(0);
+                progressBar.setStringPainted(true);
+                new Thread(new Runnable() {
+                    public void run() {
+                        long startTime = System.nanoTime();
 
+                        String fileExtensions[] = {"png", "jpg", "gif"};
+
+                        File folder = new File(directoryTextField.getText() + "/");
+                        File[] listOfFiles = folder.listFiles();
+
+                        progressBar.setMaximum(listOfFiles.length);
+
+                        for (int i = 0; i < listOfFiles.length; i++) {
+
+                            final int val = i + 1;
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    progressBar.setValue(val);
+                                }
+                            });
+                            if (Arrays.asList(fileExtensions).contains(getFileExtension(listOfFiles[i]))) {
+                                sourceImages source = new sourceImages(listOfFiles[i].getAbsolutePath());
+                                source.scale(32);
+                                source.writeImg(processedOutputDirectory.getText().toString(), "test" + i);
+                            }
+                        }
+                        long endTime = System.nanoTime();
+                        outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);
+                    }
+                }).start();
+
+                /* Non-threaded processing
                 long startTime = System.nanoTime();
+
 
                 String fileExtensions[] = {"png", "jpg", "gif"};
 
@@ -173,6 +207,7 @@ public class mainWindow {
 
                 long endTime = System.nanoTime();
                 outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);
+                */
 
 
                 /* Probably won't use or change as it runs out of memory
@@ -295,7 +330,7 @@ public class mainWindow {
      */
     private void $$$setupUI$$$() {
         baseWindow = new JPanel();
-        baseWindow.setLayout(new GridLayoutManager(4, 1, new Insets(15, 10, 15, 10), -1, -1));
+        baseWindow.setLayout(new GridLayoutManager(5, 1, new Insets(15, 10, 15, 10), -1, -1));
         Directories = new JPanel();
         Directories.setLayout(new GridLayoutManager(4, 3, new Insets(0, 0, 0, 0), -1, -1));
         baseWindow.add(Directories, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -361,6 +396,9 @@ public class mainWindow {
         baseWindow.add(outputTextPane, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         final JSeparator separator1 = new JSeparator();
         baseWindow.add(separator1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        progressBar = new JProgressBar();
+        progressBar.setStringPainted(false);
+        baseWindow.add(progressBar, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
