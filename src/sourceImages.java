@@ -78,7 +78,9 @@ public class sourceImages{
     }
 
     public Color average() {
+//    public int[] average() {
         int r = 0, g = 0, b = 0;
+//        int rgb[] = {0, 0, 0};
         Color pix;
 
         for(int x = 0; x < img.getWidth(); x++) {
@@ -87,13 +89,20 @@ public class sourceImages{
                 r += pix.getRed();
                 g += pix.getGreen();
                 b += pix.getBlue();
+//                rgb[0] += pix.getRed();
+//                rgb[1] += pix.getGreen();
+//                rgb[2] += pix.getBlue();
             }
         }
-        r /= img.getWidth();
-        g /= img.getWidth();
-        b /= img.getWidth();
+        r /= img.getWidth() * img.getWidth();
+        g /= img.getWidth() * img.getWidth();
+        b /= img.getWidth() * img.getWidth();
+//        rgb[0] /= img.getWidth();
+//        rgb[1] /= img.getWidth();
+//        rgb[2] /= img.getWidth();
 
         return new Color(r, g, b);
+//        return rgb;
     }
 
 

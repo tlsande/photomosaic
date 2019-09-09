@@ -186,7 +186,12 @@ public class mainWindow {
                                 source.scale(32);
                                 String name = "test" + i;
                                 source.writeImg(processedOutputDirectory.getText(), "/test" + i);
-                                outputData.append("test" + i + ".png" + "\n");
+                                outputData.append("test" + i + ".png" + " ");
+
+                                Color color = source.average();
+                                outputData.append(color.getRed() + " " + color.getGreen() + " " + color.getBlue() + "\n");
+//                                int rgb[] = source.average();
+//                                outputData.append(rgb[0] + " " + rgb[1] + " " + rgb[2] + "\n");
                             }
                         }
                         try {
