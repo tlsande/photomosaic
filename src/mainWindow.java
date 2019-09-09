@@ -54,6 +54,7 @@ public class mainWindow {
             public void actionPerformed(ActionEvent e) {
 
                 JFileChooser fc = new JFileChooser();
+                // ToDo: Either remove this current directory or add to other Browse buttons
                 fc.setCurrentDirectory(new File("."));
                 fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fc.setAcceptAllFileFilterUsed(false);
@@ -139,15 +140,29 @@ public class mainWindow {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                imageMod base = new imageMod(basePictureLocation.getText());
 
-                base.scaleDown(Integer.parseInt(blockSizeTextField.getText()));
+                File tempFile = new File("data/cache.txt");
+                if (tempFile.exists()) {
+
+                    imageMod base = new imageMod(basePictureLocation.getText());
+
+                    base.scaleDown(Integer.parseInt(blockSizeTextField.getText()));
+
+                    for (int x = 0; x < base.getScaledWidth(); x++) {
+                        for (int y = 0; y < base.getScaledHeight(); y++) {
+
+                        }
+                    }
+
 //                base.writeImg(outputDirectory.getText());
 //                outputTextPane.setText("Finished scale down");
 
-                base.scaleUp(Integer.parseInt(blockSizeTextField.getText()));
-                base.writeImg(outputDirectory.getText());
-                outputTextPane.setText("Finished");
+                    base.scaleUp(Integer.parseInt(blockSizeTextField.getText()));
+                    base.writeImg(outputDirectory.getText());
+                    outputTextPane.setText("Finished");
+                } else {
+                    outputTextPane.setText("Cache has not been created. Create cache using source image directory.");
+                }
             }
         });
 
@@ -195,7 +210,17 @@ public class mainWindow {
                             }
                         }
                         try {
-                            BufferedWriter bwr = new BufferedWriter(new FileWriter(processedOutputDirectory.getText() + "/cache.txt"));
+                            //BufferedWriter bwr = new BufferedWriter(new FileWriter(processedOutputDirectory.getText() + "/cache.txt"));
+
+                            File directory = new File("data/");
+                            if (!directory.exists()) {
+                                directory.mkdir();
+                            }
+                            File outputFile = new File("data/cache.txt");
+                            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile());
+                            BufferedWriter bwr = new BufferedWriter(fw);
+//                            BufferedWriter bwr = new BufferedWriter(new FileWriter("data/cache.txt"));
+
                             bwr.write(outputData.toString());
                             bwr.flush();
                             bwr.close();
@@ -204,8 +229,8 @@ public class mainWindow {
                         }
 
 
-                        Cache cache = new Cache(processedOutputDirectory.getText() + "/cache.txt");
-                        cache.printCache();
+//                        Cache cache = new Cache(processedOutputDirectory.getText() + "/cache.txt");
+//                        cache.printCache();
 
                         long endTime = System.nanoTime();
                         outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);

@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class imageMod {
-    protected BufferedImage img;
+    private BufferedImage img;
+    private BufferedImage imgSmall;
 
     public imageMod(String inFile) {
         try {
@@ -23,6 +24,7 @@ public class imageMod {
         g.drawImage(img, 0, 0, newX, newY, null);
         g.dispose();
         img = resized;
+        imgSmall = resized;
     }
 
     public void scaleUp(int blocksize) {
@@ -36,6 +38,7 @@ public class imageMod {
         img = resized;
     }
 
+
     public void writeImg(String name) {
         try {
             File outputfile = new File(name + ".png");
@@ -44,5 +47,13 @@ public class imageMod {
         catch (IOException e) {
             System.out.println("Could not write out image.");
         }
+    }
+
+    public int getScaledWidth() {
+        return imgSmall.getWidth();
+    }
+
+    public int getScaledHeight() {
+        return imgSmall.getHeight();
     }
 }
