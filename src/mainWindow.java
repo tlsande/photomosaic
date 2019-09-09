@@ -166,7 +166,7 @@ public class mainWindow {
 
                         StringBuffer outputData = new StringBuffer();
 
-                        outputData.append(processedOutputDirectory.getText() + "\\\n");
+                        outputData.append(processedOutputDirectory.getText() + "\\");
 
                         File folder = new File(directoryTextField.getText() + "/");
                         File[] listOfFiles = folder.listFiles();
@@ -186,10 +186,10 @@ public class mainWindow {
                                 source.scale(32);
                                 String name = "test" + i;
                                 source.writeImg(processedOutputDirectory.getText(), "/test" + i);
-                                outputData.append("test" + i + ".png" + " ");
+                                outputData.append("\ntest" + i + ".png" + " ");
 
                                 Color color = source.average();
-                                outputData.append(color.getRed() + " " + color.getGreen() + " " + color.getBlue() + "\n");
+                                outputData.append(color.getRed() + " " + color.getGreen() + " " + color.getBlue());
 //                                int rgb[] = source.average();
 //                                outputData.append(rgb[0] + " " + rgb[1] + " " + rgb[2] + "\n");
                             }
@@ -199,16 +199,21 @@ public class mainWindow {
                             bwr.write(outputData.toString());
                             bwr.flush();
                             bwr.close();
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             System.out.println("Failed to write cache.");
                         }
 
 
+                        Cache cache = new Cache(processedOutputDirectory.getText() + "/cache.txt");
+                        cache.printCache();
+
                         long endTime = System.nanoTime();
                         outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);
+
+
                     }
                 }).start();
+
 
 
                 /* Non-threaded processing
