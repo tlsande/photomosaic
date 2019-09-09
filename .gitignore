@@ -6,3 +6,4 @@ out/
 *.iml
 *.jar
 src/META-INF/
+src/main.java

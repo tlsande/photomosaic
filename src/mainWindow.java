@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.Arrays;
 
 public class mainWindow {
     private JPanel baseWindow;
@@ -149,12 +150,46 @@ public class mainWindow {
         batchStartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sourceImages source = new sourceImages(directoryTextField.getText());
-                source.scale(32);
-                source.writeImg(processedOutputDirectory.getText().toString(), "test");
 
-                source = null;
-                System.gc();
+
+                long startTime = System.nanoTime();
+
+                String fileExtensions[] = {"png", "jpg", "gif"};
+
+                File folder = new File(directoryTextField.getText() + "/");
+                File[] listOfFiles = folder.listFiles();
+
+                for (int i = 0; i < listOfFiles.length; i++) {
+                    //System.out.println(getFileExtension(listOfFiles[i]));
+                    //outputTextPane.setText("Image: " + (i + 1) + "/" + listOfFiles.length);
+                    if (Arrays.asList(fileExtensions).contains(getFileExtension(listOfFiles[i]))) {
+                        sourceImages source = new sourceImages(listOfFiles[i].getAbsolutePath());
+                        source.scale(32);
+                        source.writeImg(processedOutputDirectory.getText().toString(), "test" + i);
+                        //source.writeImg(processedOutputDirectory.getText().toString(), listOfFiles[i].getName());
+                    }
+                }
+                //outputTextPane.setText("Finished");
+
+                long endTime = System.nanoTime();
+                outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);
+
+
+                /* Probably won't use or change as it runs out of memory
+                long startTime = System.nanoTime();
+
+                sourceImages source = new sourceImages(directoryTextField.getText());
+                outputTextPane.setText("Images loaded.");
+                source.scale(32);
+                outputTextPane.setText("Images scaled");
+                source.writeImg(processedOutputDirectory.getText().toString(), "test");
+                outputTextPane.setText("Finished");
+
+                long endTime = System.nanoTime();
+                outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);
+                */
+
+
             }
         });
         processedOutputButton.addActionListener(new ActionListener() {
@@ -220,6 +255,13 @@ public class mainWindow {
                 }
             }
         });
+    }
+
+    public static String getFileExtension(File file) {
+        String fileName = file.getName();
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        } else return "";
     }
 
     public static void main(String[] args) {

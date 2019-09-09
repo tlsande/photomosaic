@@ -8,9 +8,13 @@ public class sourceImages{
 //    public sourceImages(String inFile) {
 //        super(inFile);
 //    }
-    
-    BufferedImage images[];
+    private BufferedImage img;
     //int numFiles;
+
+
+    /* More than likely will be removed, runs out of memeory
+
+    private BufferedImage images[];
 
     public sourceImages(String directory) {
         try {
@@ -39,6 +43,43 @@ public class sourceImages{
         }
     }
 
+    public void writeImg(String directory, String name) {
+        // Will have to change code if I add option to change output extension
+        try {
+            for(int i = 0; i < images.length; i++) {
+                File outputfile = new File(directory +"/" + name + i + ".png");
+                ImageIO.write(images[i], "png", outputfile);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Could not write out image");
+        }
+    }
+    */
+
+
+    public sourceImages(String location) {
+        try{
+            img = ImageIO.read(new File(location));
+        }
+        catch (IOException e) {
+            System.out.println("Failed to load image: " + location);
+        }
+    }
+
+
+    public void scale(int size) {
+        BufferedImage resized = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+
+        Graphics g = resized.createGraphics();
+        g.drawImage(img, 0, 0, size, size, null);
+        g.dispose();
+        img = resized;
+    }
+
+
+
+
 //    public Color average() {
 //        int r = 0, g = 0, b = 0;
 //        Color pix;
@@ -58,13 +99,11 @@ public class sourceImages{
 //        return new Color(r, g, b);
 //    }
 
+
     public void writeImg(String directory, String name) {
-        // Will have to change code if I add option to change output extension
         try {
-            for(int i = 0; i < images.length; i++) {
-                File outputfile = new File(directory +"/" + name + i + ".png");
-                ImageIO.write(images[i], "png", outputfile);
-            }
+            File outputfile = new File(directory + "/" + name + ".png");
+            ImageIO.write(img, "png", outputfile);
         }
         catch (IOException e) {
             System.out.println("Could not write out image");
