@@ -77,27 +77,24 @@ public class sourceImages{
         img = resized;
     }
 
+    public Color average() {
+        int r = 0, g = 0, b = 0;
+        Color pix;
 
+        for(int x = 0; x < img.getWidth(); x++) {
+            for(int y= 0; y < img.getHeight(); y++) {
+                pix = new Color(img.getRGB(x, y));
+                r += pix.getRed();
+                g += pix.getGreen();
+                b += pix.getBlue();
+            }
+        }
+        r /= img.getWidth();
+        g /= img.getWidth();
+        b /= img.getWidth();
 
-
-//    public Color average() {
-//        int r = 0, g = 0, b = 0;
-//        Color pix;
-//
-//        for(int x = 0; x < img.getWidth(); x++) {
-//            for(int y= 0; y < img.getHeight(); y++) {
-//                pix = new Color(img.getRGB(x, y));
-//                r += pix.getRed();
-//                g += pix.getGreen();
-//                b += pix.getBlue();
-//            }
-//        }
-//        r /= img.getWidth();
-//        g /= img.getWidth();
-//        b /= img.getWidth();
-//
-//        return new Color(r, g, b);
-//    }
+        return new Color(r, g, b);
+    }
 
 
     public void writeImg(String directory, String name) {

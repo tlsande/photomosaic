@@ -8,7 +8,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class mainWindow {
@@ -152,6 +155,7 @@ public class mainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+
                 progressBar.setValue(0);
                 progressBar.setStringPainted(true);
                 new Thread(new Runnable() {
@@ -159,6 +163,10 @@ public class mainWindow {
                         long startTime = System.nanoTime();
 
                         String fileExtensions[] = {"png", "jpg", "gif"};
+
+                        StringBuffer outputData = new StringBuffer();
+
+                        outputData.append(processedOutputDirectory.getText() + "\\\n");
 
                         File folder = new File(directoryTextField.getText() + "/");
                         File[] listOfFiles = folder.listFiles();
@@ -176,13 +184,27 @@ public class mainWindow {
                             if (Arrays.asList(fileExtensions).contains(getFileExtension(listOfFiles[i]))) {
                                 sourceImages source = new sourceImages(listOfFiles[i].getAbsolutePath());
                                 source.scale(32);
-                                source.writeImg(processedOutputDirectory.getText().toString(), "test" + i);
+                                String name = "test" + i;
+                                source.writeImg(processedOutputDirectory.getText(), "/test" + i);
+                                outputData.append("test" + i + ".png" + "\n");
                             }
                         }
+                        try {
+                            BufferedWriter bwr = new BufferedWriter(new FileWriter(processedOutputDirectory.getText() + "/cache.txt"));
+                            bwr.write(outputData.toString());
+                            bwr.flush();
+                            bwr.close();
+                        }
+                        catch (IOException e) {
+                            System.out.println("Failed to write cache.");
+                        }
+
+
                         long endTime = System.nanoTime();
                         outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);
                     }
                 }).start();
+
 
                 /* Non-threaded processing
                 long startTime = System.nanoTime();
@@ -201,9 +223,11 @@ public class mainWindow {
                         source.scale(32);
                         source.writeImg(processedOutputDirectory.getText().toString(), "test" + i);
                         //source.writeImg(processedOutputDirectory.getText().toString(), listOfFiles[i].getName());
+
                     }
                 }
                 //outputTextPane.setText("Finished");
+
 
                 long endTime = System.nanoTime();
                 outputTextPane.setText("Runtime: " + (double) (endTime - startTime) / 1_000_000_000);

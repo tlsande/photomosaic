@@ -7,3 +7,4 @@ out/
 *.jar
 src/META-INF/
 src/main.java
+*.txt
