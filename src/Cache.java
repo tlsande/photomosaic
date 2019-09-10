@@ -28,6 +28,28 @@ public class Cache {
         }
     }
 
+    public String closest(Color pixel) {
+        double min = Double.MAX_VALUE;
+        String closest = "";
+
+        for(int i = 0; i < fileNames.size(); i++) {
+            double dx = colors.get(i).getRed() - pixel.getRed();
+            double dy = colors.get(i).getGreen() - pixel.getGreen();
+            double dz = colors.get(i).getBlue() - pixel.getBlue();
+            double temp = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+            if(temp < min) {
+                min = temp;
+                closest = fileNames.get(i);
+            }
+        }
+        return closest;
+    }
+
+    public String getDirectory() {
+        return Directory;
+    }
+
     public void printCache() {
         System.out.println("Director: " + Directory);
 

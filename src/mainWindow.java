@@ -143,21 +143,25 @@ public class mainWindow {
 
                 File tempFile = new File("data/cache.txt");
                 if (tempFile.exists()) {
+                    Cache cache = new Cache("data/cache.txt");
 
                     imageMod base = new imageMod(basePictureLocation.getText());
 
                     base.scaleDown(Integer.parseInt(blockSizeTextField.getText()));
+                    base.scaleUp(Integer.parseInt(blockSizeTextField.getText()));
 
                     for (int x = 0; x < base.getScaledWidth(); x++) {
                         for (int y = 0; y < base.getScaledHeight(); y++) {
-
+//                            System.out.println("(R,G,B): " + "(" + base.getColor(x, y).getRed() + "," + base.getColor(x, y).getGreen() + ", " + base.getColor(x, y).getBlue() + ")");
+//                            System.out.println(cache.closest(base.getColor(x, y)));
+                            base.addImage(cache.getDirectory() + cache.closest(base.getColor(x, y)), x, y, Integer.parseInt(blockSizeTextField.getText()));
                         }
                     }
 
 //                base.writeImg(outputDirectory.getText());
 //                outputTextPane.setText("Finished scale down");
 
-                    base.scaleUp(Integer.parseInt(blockSizeTextField.getText()));
+                    //base.scaleUp(Integer.parseInt(blockSizeTextField.getText()));
                     base.writeImg(outputDirectory.getText());
                     outputTextPane.setText("Finished");
                 } else {
@@ -198,7 +202,8 @@ public class mainWindow {
                             });
                             if (Arrays.asList(fileExtensions).contains(getFileExtension(listOfFiles[i]))) {
                                 sourceImages source = new sourceImages(listOfFiles[i].getAbsolutePath());
-                                source.scale(32);
+                                // Todo Cache blocksize
+                                source.scale(Integer.parseInt(blockSizeTextField.getText()));
                                 String name = "test" + i;
                                 source.writeImg(processedOutputDirectory.getText(), "/test" + i);
                                 outputData.append("\ntest" + i + ".png" + " ");

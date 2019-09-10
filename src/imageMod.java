@@ -38,6 +38,21 @@ public class imageMod {
         img = resized;
     }
 
+    public void addImage(String location, int x, int y, int blocksize) {
+        BufferedImage result = img;
+        Graphics g = result.getGraphics();
+        try {
+            BufferedImage bi = ImageIO.read(new File(location));
+//            x *= blocksize;
+//            y *= blocksize;
+            x *= bi.getWidth();
+            y *= bi.getHeight();
+
+            g.drawImage(bi, x, y, null);
+            img = result;
+
+        } catch (IOException e) { }
+    }
 
     public void writeImg(String name) {
         try {
@@ -47,6 +62,10 @@ public class imageMod {
         catch (IOException e) {
             System.out.println("Could not write out image.");
         }
+    }
+
+    public Color getColor(int x, int y) {
+        return new Color(imgSmall.getRGB(x, y));
     }
 
     public int getScaledWidth() {
